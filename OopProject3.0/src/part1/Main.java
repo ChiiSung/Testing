@@ -424,8 +424,6 @@ public class Main {
                             System.out.println("------------------------------");
                             System.out.println("Total calories: " + calories + "kcal");
                             System.out.println("Total price: RM" + String.format("%.2f", price));
-                            System.out.print("\nEnter any key to continue... ");
-                            scanner.next();
                         }
                         break;
 
@@ -569,7 +567,7 @@ public class Main {
 
                     case 5:
                         System.out.println("--------------------End-------------------------");
-
+                        System.out.println("The changes were saved in the system.");
 
 
 
