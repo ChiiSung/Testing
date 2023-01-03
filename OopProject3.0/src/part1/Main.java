@@ -7,12 +7,16 @@ import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
+import javax.swing.JOptionPane;
+
 import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
 
 public class Main {
 
     public static void main(String[] args) throws InterruptedException, IOException {
+    	
+    	JOptionPane error = new JOptionPane();
         //Declaration
         List<User>user = new ArrayList<>();
         List<Food>food = new ArrayList<>();
@@ -150,7 +154,7 @@ public class Main {
             userLogin = null;
             //Login
             do{
-                System.out.println("\n------Login page------");
+                System.out.println("\n---------Login page---------");
 
                 //Check validity
                 do {
@@ -175,7 +179,7 @@ public class Main {
                         do {
                             try {
                                 password = "";
-                                System.out.print("Enter your password: ");
+                                System.out.print("Enter your password (Press 0 to Return Previous Step): ");
                                 password = scanner.nextLine();
                             }catch(InputMismatchException e) {
                                 System.out.print("!!! Please enter valid password !!! ");
@@ -185,18 +189,17 @@ public class Main {
                                 userLogin = user.get(i);
                                 System.out.println("Succesful login...");
                                 break;
-                            }else{
-                                System.out.println("!!! Password Incorrect !!!");
-                                Thread.sleep(1000); //stop the program for 1 second
-                                for (int j = 0; j < 50; ++j) System.out.println(); //print blank lines to make the output look simple
+                            }else if(password.equalsIgnoreCase("0")){
+                            	break;
+                            }else {
+                            	error.showMessageDialog(error, "Password Incorrect", "Wrong Password", JOptionPane.WARNING_MESSAGE);
                             }
                         }while(!(user.get(i).getPassword().equalsIgnoreCase(password)));//if password input is not same as user.txt
                     }
                 }
                 if(password == "") {
-                    System.out.println("The user is not found");
-                    Thread.sleep(1000); //stop the program for 1 second
-                    for (int j = 0; j < 50; ++j) System.out.println(); //print blank lines
+                	error.showMessageDialog(error, "The user is not found", "Undefined User", JOptionPane.WARNING_MESSAGE);
+                }else if(password == "0") {
                 }
             }while(userLogin == null);//repeat when there is no user login into system
 
@@ -214,7 +217,7 @@ public class Main {
                     System.out.println("|2)Order Drink                              |");
                     System.out.println("|3)View Order                               |");
                     System.out.println("|4)Cancel Order                             |");
-                    System.out.println("|5)Exit                                     |");
+                    System.out.println("|5)Save and Exit                            |");
                     System.out.println("---------------------------------------------");
 
                     option = 0;
@@ -225,7 +228,7 @@ public class Main {
                         option = input.nextInt();
                         valid = true;
                     }catch (InputMismatchException e) {
-                        System.out.println("!!! Please enter a number !!!");
+                    	error.showMessageDialog(error, "Please enter a number", "Error Input", JOptionPane.WARNING_MESSAGE);
                         valid = false;
                     }
                 }while(!valid);
@@ -238,27 +241,28 @@ public class Main {
                         int num = 0;
                         do {
                             Scanner input = new Scanner(System.in);
-                            System.out.println("--------------------FOOD LIST--------------------");
+                            System.out.println("------------------FOOD LIST------------------");
                             for(int i = 0; i<food.size();i++) {
                                 System.out.println(i+1 + ") " + food.get(i).toString()); //list of food available
                             }
-                            System.out.println("-------------------------------------------------");
+                            System.out.println("---------------------------------------------");
 
                             num = 0;
                             try {
-                                System.out.print("Enter the type of food you want: ");
+                                System.out.print("Enter the type of food you want (Press 0 to Return Previous Step): ");
                                 num = input.nextInt();
                             }catch (InputMismatchException e) {//if user input other than integer
-                                System.out.println("!!! Please enter a number !!!");
-                                Thread.sleep(1000); //stop program for 1 second
-                                for (int j = 0; j < 50; ++j) System.out.println(); //print blank lines
+                            	error.showMessageDialog(error, "Please enter a number", "Error Input", JOptionPane.WARNING_MESSAGE);
                             }
                             if(num<0 || num>food.size()+1) { //if user input other than the food list
-                                System.out.println("The choice was no found.");
-                                Thread.sleep(1000); //stop program 1 second
+                            	error.showMessageDialog(error, "The choice was no found", "Error Input", JOptionPane.WARNING_MESSAGE);
                             }
-                        }while(num<=0 || num>food.size()+1); //repeat if user input other than food list
+                        }while(num<0 || num>food.size()+1); //repeat if user input other than food list
 
+                        if (num == 0) {
+                        	break;
+                        }
+                        
                         Food foodOrder = new Food(food.get(num-1).getProductName(),food.get(num-1).getDetail(),food.get(num-1).getPrice());
 
                         //Add Sauce
@@ -266,7 +270,7 @@ public class Main {
                         do {
                             // print sauce menu
                             Scanner input = new Scanner(System.in);
-                            System.out.println("--------------------Sauce--------------------");
+                            System.out.println("---------------------Sauce-------------------");
                             System.out.println("1) Chili ");
                             System.out.println("2) Tomato ");
                             System.out.println("3) No Sauce ");
@@ -318,26 +322,28 @@ public class Main {
                         //order drink
                         do {
                             Scanner input = new Scanner(System.in);
-                            System.out.println("--------------------Drink LIST--------------------");
+                            System.out.println("------------------Drink LIST-----------------");
                             for(int i = 0; i<drink.size();i++) {
                                 System.out.println(i+1 + ") " + drink.get(i).toString()); // list of drink available
                             }
-                            System.out.println("-------------------------------------------------");
+                            System.out.println("---------------------------------------------");
 
                             num = 0;
                             try {
-                                System.out.print("Enter the type of drink you want: ");
+                                System.out.print("Enter the type of drink you want(Press 0 to Return Previous Step): ");
                                 num = input.nextInt();
-                            }catch (InputMismatchException e) { // if user input other than integer
-                                System.out.println("!!! Please enter a number !!!");
-                                Thread.sleep(1000);// stop program 1 second
-                                for (int j = 0; j < 50; ++j) System.out.println();//print blank lines
+                            }catch (InputMismatchException e) {//if user input other than integer
+                            	error.showMessageDialog(error, "Please enter a number", "Error Input", JOptionPane.WARNING_MESSAGE);
                             }
-                            if(num<0 || num>drink.size()+1) { //if user input other than the drink list
-                                System.out.println("The choice was no found.");
-                                Thread.sleep(1000);//stop program 1s
+                            if(num<0 || num>food.size()+1) { //if user input other than the food list
+                            	error.showMessageDialog(error, "The choice was no found", "Error Input", JOptionPane.WARNING_MESSAGE);
                             }
-                        }while(num<=0 || num>drink.size()+1); //repeat when user input other than drink list
+                        }while(num<0 || num>drink.size()+1); //repeat when user input other than drink list\
+                        
+                        if (num == 0) {
+                        	break;
+                        }
+                        
                         Drink drinkOrder = new Drink(drink.get(num-1).getProductName(),drink.get(num-1).getDetail(),drink.get(num-1).getPrice());
 
                         //Set size for drink
@@ -394,184 +400,187 @@ public class Main {
                     case 3:
                         //view order
                         //if the user does not exist in orderList
-                        if(orderList.get(0).findUser(orderList, userLogin) == -1) {
-                            System.out.println("You have not ordered anything.");
-                        }else { //if user exist in the orderList
-                            double calories = 0, price = 0;
-                            int numArrayListUser = orderList.get(0).findUser(orderList, userLogin);
-                            if(orderList.get(numArrayListUser).getFood().size() != 0) {//if user's food orderList is not empty
-                                System.out.println("---------------Food---------------");
-                            }
-                            for(int i = 0 ; i < orderList.get(numArrayListUser).getFood().size() ; i++) {
-                                //Print food ArrayList
-                                System.out.println( i+1+ ")" + orderList.get(numArrayListUser).getFood().get(i) + " --- " + orderList.get(numArrayListUser).getFood().get(i).getQuantityInOrder() );
-                                //calculate total calories
-                                calories += orderList.get(numArrayListUser).getFood().get(i).getDetail() * orderList.get(numArrayListUser).getFood().get(i).getQuantityInOrder();
-                                //calculate total price
-                                price += orderList.get(numArrayListUser).getFood().get(i).getPrice() * orderList.get(numArrayListUser).getFood().get(i).getQuantityInOrder();
-                            }
-                            if(orderList.get(numArrayListUser).getDrink().size() != 0) {//if user's drink orderList is not empty
-                                System.out.println("---------------Drink--------------");
-                            }
-                            for(int i = 0; i<orderList.get(numArrayListUser).getDrink().size();i++) {
-                                //Print Drink ArrayList
-                                System.out.println( i+1+ ")" + orderList.get(numArrayListUser).getDrink().get(i) + " --- " + orderList.get(numArrayListUser).getDrink().get(i).getQuantityInOrder());
-                                //calculate total calories
-                                calories += orderList.get(numArrayListUser).getDrink().get(i).getDetail() * orderList.get(numArrayListUser).getDrink().get(i).getQuantityInOrder();
-                                //calculate total price
-                                price += orderList.get(numArrayListUser).getDrink().get(i).getPrice() * orderList.get(numArrayListUser).getDrink().get(i).getQuantityInOrder();
-                            }
-                            System.out.println("------------------------------");
-                            System.out.println("Total calories: " + calories + "kcal");
-                            System.out.println("Total price: RM" + String.format("%.2f", price));
-                        }
+                    	if(orderList.size() !=0) {
+	                        if(orderList.get(0).findUser(orderList, userLogin) == -1) {
+	                            System.out.println("You have not ordered anything.");
+	                        }else { //if user exist in the orderList
+	                            double calories = 0, price = 0;
+	                            int numArrayListUser = orderList.get(0).findUser(orderList, userLogin);
+	                            if(orderList.get(numArrayListUser).getFood().size() != 0) {//if user's food orderList is not empty
+	                                System.out.println("---------------------Food--------------------");
+	                            }
+	                            for(int i = 0 ; i < orderList.get(numArrayListUser).getFood().size() ; i++) {
+	                                //Print food ArrayList
+	                                System.out.println( i+1+ ")" + orderList.get(numArrayListUser).getFood().get(i) + " --- " + orderList.get(numArrayListUser).getFood().get(i).getQuantityInOrder() );
+	                                //calculate total calories
+	                                calories += orderList.get(numArrayListUser).getFood().get(i).getDetail() * orderList.get(numArrayListUser).getFood().get(i).getQuantityInOrder();
+	                                //calculate total price
+	                                price += orderList.get(numArrayListUser).getFood().get(i).getPrice() * orderList.get(numArrayListUser).getFood().get(i).getQuantityInOrder();
+	                            }
+	                            if(orderList.get(numArrayListUser).getDrink().size() != 0) {//if user's drink orderList is not empty
+	                                System.out.println("--------------------Drink--------------------");
+	                            }
+	                            for(int i = 0; i<orderList.get(numArrayListUser).getDrink().size();i++) {
+	                                //Print Drink ArrayList
+	                                System.out.println( i+1+ ")" + orderList.get(numArrayListUser).getDrink().get(i) + " --- " + orderList.get(numArrayListUser).getDrink().get(i).getQuantityInOrder());
+	                                //calculate total calories
+	                                calories += orderList.get(numArrayListUser).getDrink().get(i).getDetail() * orderList.get(numArrayListUser).getDrink().get(i).getQuantityInOrder();
+	                                //calculate total price
+	                                price += orderList.get(numArrayListUser).getDrink().get(i).getPrice() * orderList.get(numArrayListUser).getDrink().get(i).getQuantityInOrder();
+	                            }
+	                            System.out.println("----------------------------------------------");
+	                            System.out.println("Total calories: " + calories + "kcal");
+	                            System.out.println("Total price: RM" + String.format("%.2f", price));
+	                        }
+                    	}else {
+                    		System.out.println("You have not ordered anything.");
+                    	}
                         break;
 
 
                     case 4:
                         //Cancel order
                         ////if the user does not exist in orderList
-                        if(orderList.get(0).findUser(orderList, userLogin) == -1) {
-                            System.out.println("You have not ordered anything.");
-                        }else {
-                            int cancel = 0;
-                            do {
-                                //print cancel menu
-                                System.out.println("---------------Cancel order---------------");
-                                System.out.println("1) Cancel all order");
-                                System.out.println("2) Cancel an item from the order");
-                                System.out.println("3) Exit");
-                                System.out.println("------------------------------------------");
-                                do {
-                                    try {
-                                        Scanner input = new Scanner(System.in);
-                                        System.out.print("Enter the number of option you want: ");
-                                        cancel = input.nextInt();
-                                        valid = true;
-                                    }catch (InputMismatchException e) {//if user didn't input integer
-                                        System.out.println("!!! Please enter a number !!!");
-                                        valid = false;
-                                    }
-                                }while(!valid);//repeat when user didn't input integer
-
-                                if(cancel == 1) {
-                                    String comfirm = "";
-                                    do {
-                                        try {
-                                            System.out.print("Are you sure to remove all order.(Y/N) : ");
-                                            Scanner input = new Scanner(System.in);
-                                            comfirm = input.nextLine();
-                                            if(comfirm.equalsIgnoreCase("y")) {
-                                                //remove all orderList of the user
-                                                orderList.remove(orderList.get(0).findUser(orderList, userLogin));
-                                                valid = true;
-                                            }else if(comfirm.equalsIgnoreCase("n")) {
-                                                valid = true;
-                                            }else {//if user input other than y or n
-                                                System.out.print("Please enter y or n : ");
-                                                valid = false;
-                                            }
-                                        }catch (InputMismatchException e) {
-                                            System.out.println("!!! Please enter a y or n !!!");
-                                            valid = false;
-                                        }
-                                    }while(!valid);//repeat if the input is not valid
-                                    break;
-
-                                }else if(cancel == 2) {
-
-                                    int numArrayListUser = orderList.get(0).findUser(orderList, userLogin);
-                                    System.out.println("---------------OrderList---------------");
-                                    for(int i = 0 ; i < orderList.get(numArrayListUser).getFood().size() ; i++) {
-                                        //display food user ordered and its quantity
-                                        System.out.println( i+1+ ")" + orderList.get(numArrayListUser).getFood().get(i) + " --- " + orderList.get(numArrayListUser).getFood().get(i).getQuantityInOrder());
-                                    }
-                                    for(int i = orderList.get(numArrayListUser).getFood().size(); i<orderList.get(numArrayListUser).getFood().size() + orderList.get(numArrayListUser).getDrink().size(); i++) {
-                                        //display drink user ordered and its quantity
-                                        System.out.println( i+1+ ")" + orderList.get(numArrayListUser).getDrink().get(i - orderList.get(numArrayListUser).getFood().size()) + " --- " + orderList.get(numArrayListUser).getDrink().get(i - orderList.get(numArrayListUser).getFood().size()).getQuantityInOrder() );
-                                    }
-                                    System.out.println("---------------------------------------");
-                                    int cancelOrder = 0, numberOfItem = 0;
-                                    do {
-                                        try {
-                                            Scanner input = new Scanner(System.in);
-                                            System.out.print("Enter the list that you want to delete: ");
-                                            cancelOrder = input.nextInt();
-                                            //if user input other than the cancel order list
-                                            if(cancelOrder < 0 || cancelOrder > orderList.get(numArrayListUser).getFood().size() + orderList.get(numArrayListUser).getDrink().size() ) {
-                                                System.out.println("The cancel list input not found !!!");
-                                            }else {
-                                                System.out.print("Enter the number of item that you want to delete: ");
-                                                numberOfItem = input.nextInt();
-                                                valid = true;
-                                            }
-                                            break;
-                                        }catch (InputMismatchException e) {//if user didn't input integer
-                                            System.out.println("!!! Please enter a number !!!");
-                                            valid = false;
-                                        }
-                                    }while(!valid);//repeat if the input is not valid
-                                    //cancel order for food
-                                    if(cancelOrder > 0 && cancelOrder<= orderList.get(numArrayListUser).getFood().size() && orderList.get(numArrayListUser).getFood().size() != 0) {
-                                        int restFood = orderList.get(numArrayListUser).getFood().get(cancelOrder -1).getQuantityInOrder() - numberOfItem;
-                                        //if the quantity of food = 0
-                                        if(restFood == 0) {
-                                            orderList.get(numArrayListUser).getFood().remove(cancelOrder -1);
-                                            System.out.println("The food has been removed");
-                                        }else if(restFood > 0 && numberOfItem > 0) {
-                                            //if the remaining food > 0
-                                            orderList.get(numArrayListUser).getFood().get(cancelOrder -1).setQuantityInOrder(restFood);
-                                            System.out.println("The food has been removed, still remaining " + restFood);
-                                        }else if(restFood < 0) {
-                                            //if the remaining food < 0
-                                            System.out.println("The number of cancel order is bigger than the quantity in order.");
-                                        }else if(numberOfItem < 0) {
-                                            //if user enter a negative value
-                                            System.out.println("You have entered a negative number in cancel order !!!");
-                                        }
-                                    }else if(cancelOrder > 0 && cancelOrder <= orderList.get(numArrayListUser).getFood().size() + orderList.get(numArrayListUser).getDrink().size()) {
-                                        //cancel order for drink
-                                        int drinkArray = cancelOrder - orderList.get(numArrayListUser).getFood().size() -1;
-                                        int restDrink = orderList.get(numArrayListUser).getDrink().get(drinkArray).getQuantityInOrder() - numberOfItem;
-                                        //if the quantity of drink = 0
-                                        if(restDrink == 0) {
-                                            orderList.get(numArrayListUser).getDrink().remove(drinkArray);
-                                            System.out.println("The drink has been removed");
-                                        }else if(restDrink > 0 && numberOfItem > 0) {
-                                            //if the remaining food > 0
-                                            orderList.get(numArrayListUser).getDrink().get(drinkArray).setQuantityInOrder(restDrink);
-                                            System.out.println("The drink has been removed, still remaining " + restDrink);
-                                        }else if(restDrink < 0) {
-                                            //if the remaining food < 0
-                                            System.out.println("The number of cancel order is bigger than the quantity in order.");
-                                        }else if(numberOfItem < 0) {
-                                            //if user enter a negative value
-                                            System.out.println("You have entered a negative number in cancel order !!!");
-                                        }
-                                    }
-                                    // if users' food and drink = 0, remove the orderList
-                                    if(orderList.get(numArrayListUser).getFood().size() == 0 && orderList.get(numArrayListUser).getDrink().size() == 0 ){
-                                        orderList.remove(orderList.get(0).findUser(orderList, userLogin));
-                                    }
-                                    break;
-
-                                }else if(cancel == 3){
-                                }else {
-                                    System.out.print("Enter your should input number from 1-3 : ");
-                                }
-                            }while(cancel != 3);//repeat until the user input 3
-                        }
-
+                    	if(orderList.size() !=0) {
+                    		if(orderList.get(0).findUser(orderList, userLogin) == -1) {
+                    			System.out.println("You have not ordered anything.");
+	                    	}else {
+	                            int cancel = 0;
+	                            do {
+	                                //print cancel menu
+	                                System.out.println("---------------Cancel order---------------");
+	                                System.out.println("1) Cancel all order");
+	                                System.out.println("2) Cancel an item from the order");
+	                                System.out.println("3) Exit");
+	                                System.out.println("------------------------------------------");
+	                                do {
+	                                    try {
+	                                        Scanner input = new Scanner(System.in);
+	                                        System.out.print("Enter the number of option you want: ");
+	                                        cancel = input.nextInt();
+	                                        valid = true;
+	                                    }catch (InputMismatchException e) {//if user didn't input integer
+	                                    	error.showMessageDialog(error, "Please enter a number", "Error Input", JOptionPane.WARNING_MESSAGE);
+	                                        valid = false;
+	                                    }
+	                                }while(!valid);//repeat when user didn't input integer
+	
+	                                if(cancel == 1) {
+	                                    String comfirm = "";
+	                                    do {
+	                                        try {
+	                                            System.out.print("Are you sure to remove all order.(Y/N) : ");
+	                                            Scanner input = new Scanner(System.in);
+	                                            comfirm = input.nextLine();
+	                                            if(comfirm.equalsIgnoreCase("y")) {
+	                                                //remove all orderList of the user
+	                                                orderList.remove(orderList.get(0).findUser(orderList, userLogin));
+	                                                valid = true;
+	                                            }else if(comfirm.equalsIgnoreCase("n")) {
+	                                                valid = true;
+	                                            }else {//if user input other than y or n
+	                                                System.out.print("Please enter y or n : ");
+	                                                valid = false;
+	                                            }
+	                                        }catch (InputMismatchException e) {
+	                                            System.out.println("!!! Please enter a y or n !!!");
+	                                            valid = false;
+	                                        }
+	                                    }while(!valid);//repeat if the input is not valid
+	                                    break;
+	
+	                                }else if(cancel == 2) {
+	
+	                                    int numArrayListUser = orderList.get(0).findUser(orderList, userLogin);
+	                                    System.out.println("---------------OrderList---------------");
+	                                    for(int i = 0 ; i < orderList.get(numArrayListUser).getFood().size() ; i++) {
+	                                        //display food user ordered and its quantity
+	                                        System.out.println( i+1+ ")" + orderList.get(numArrayListUser).getFood().get(i) + " --- " + orderList.get(numArrayListUser).getFood().get(i).getQuantityInOrder());
+	                                    }
+	                                    for(int i = orderList.get(numArrayListUser).getFood().size(); i<orderList.get(numArrayListUser).getFood().size() + orderList.get(numArrayListUser).getDrink().size(); i++) {
+	                                        //display drink user ordered and its quantity
+	                                        System.out.println( i+1+ ")" + orderList.get(numArrayListUser).getDrink().get(i - orderList.get(numArrayListUser).getFood().size()) + " --- " + orderList.get(numArrayListUser).getDrink().get(i - orderList.get(numArrayListUser).getFood().size()).getQuantityInOrder() );
+	                                    }
+	                                    System.out.println("---------------------------------------");
+	                                    int cancelOrder = 0, numberOfItem = 0;
+	                                    do {
+	                                        try {
+	                                            Scanner input = new Scanner(System.in);
+	                                            System.out.print("Enter the list that you want to delete: ");
+	                                            cancelOrder = input.nextInt();
+	                                            //if user input other than the cancel order list
+	                                            if(cancelOrder <= 0 || cancelOrder > orderList.get(numArrayListUser).getFood().size() + orderList.get(numArrayListUser).getDrink().size() ) {
+	                                                error.showMessageDialog(error, "The cancel list input not found", "Error Input", JOptionPane.WARNING_MESSAGE);
+	                                            }else {
+	                                                System.out.print("Enter the quantity of item that you want to delete: ");
+	                                                numberOfItem = input.nextInt();
+	                                                valid = true;
+	                                            }
+	                                            break;
+	                                        }catch (InputMismatchException e) {//if user didn't input integer
+	                                        	error.showMessageDialog(error, "Please enter a number", "Error Input", JOptionPane.WARNING_MESSAGE);
+	                                            valid = false;
+	                                        }
+	                                    }while(!valid);//repeat if the input is not valid
+	                                    //cancel order for food
+	                                    if(cancelOrder > 0 && cancelOrder<= orderList.get(numArrayListUser).getFood().size() && orderList.get(numArrayListUser).getFood().size() != 0) {
+	                                        int restFood = orderList.get(numArrayListUser).getFood().get(cancelOrder -1).getQuantityInOrder() - numberOfItem;
+	                                        //if the quantity of food = 0
+	                                        if(restFood == 0) {
+	                                            orderList.get(numArrayListUser).getFood().remove(cancelOrder -1);
+	                                            System.out.println("The food has been removed");
+	                                        }else if(restFood > 0 && numberOfItem > 0) {
+	                                            //if the remaining food > 0
+	                                            orderList.get(numArrayListUser).getFood().get(cancelOrder -1).setQuantityInOrder(restFood);
+	                                            System.out.println("The food has been removed, still remaining " + restFood);
+	                                        }else if(restFood < 0) {
+	                                            //if the remaining food < 0
+	                                            System.out.println("The number of cancel order is bigger than the quantity in order.");
+	                                        }else if(numberOfItem < 0) {
+	                                            //if user enter a negative value
+	                                            System.out.println("You have entered a negative number in cancel order !!!");
+	                                        }
+	                                    }else if(cancelOrder > 0 && cancelOrder <= orderList.get(numArrayListUser).getFood().size() + orderList.get(numArrayListUser).getDrink().size()) {
+	                                        //cancel order for drink
+	                                        int drinkArray = cancelOrder - orderList.get(numArrayListUser).getFood().size() -1;
+	                                        int restDrink = orderList.get(numArrayListUser).getDrink().get(drinkArray).getQuantityInOrder() - numberOfItem;
+	                                        //if the quantity of drink = 0
+	                                        if(restDrink == 0) {
+	                                            orderList.get(numArrayListUser).getDrink().remove(drinkArray);
+	                                            System.out.println("The drink has been removed");
+	                                        }else if(restDrink > 0 && numberOfItem > 0) {
+	                                            //if the remaining food > 0
+	                                            orderList.get(numArrayListUser).getDrink().get(drinkArray).setQuantityInOrder(restDrink);
+	                                            System.out.println("The drink has been removed, still remaining " + restDrink);
+	                                        }else if(restDrink < 0) {
+	                                            //if the remaining food < 0
+	                                            System.out.println("The number of cancel order is bigger than the quantity in order.");
+	                                        }else if(numberOfItem < 0) {
+	                                            //if user enter a negative value
+	                                            System.out.println("You have entered a negative number in cancel order !!!");
+	                                        }
+	                                    }
+	                                    // if users' food and drink = 0, remove the orderList
+	                                    if(orderList.get(numArrayListUser).getFood().size() == 0 && orderList.get(numArrayListUser).getDrink().size() == 0 ){
+	                                        orderList.remove(orderList.get(0).findUser(orderList, userLogin));
+	                                    }
+	                                    break;
+	
+	                                }else if(cancel == 3){
+	                                }else {
+	                                	error.showMessageDialog(error, "Enter your should input number from 1-3", "Error Input", JOptionPane.WARNING_MESSAGE);
+	                                }
+	                            }while(cancel != 3);//repeat until the user input 3
+	                        }
+                    	}else {
+                    		System.out.println("You have not ordered anything.");
+                    	}
                         break;
 
 
                     case 5:
                         System.out.println("--------------------End-------------------------");
                         System.out.println("The changes were saved in the system.");
-
-
-
-
 
                         //Write orderList into orderList.txt
                         File file = null;
@@ -592,9 +601,9 @@ public class Main {
 
                         break;
 
-
+                        
                     default:
-                        System.out.println("Your should input number from 1-7.");
+                    	error.showMessageDialog(error, "Your should input number from 1-5", "Error Input", JOptionPane.WARNING_MESSAGE);
                 }
 
             }while(option != 5);//repeat until the user input 5

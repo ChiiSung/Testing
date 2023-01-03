@@ -222,6 +222,6 @@ public class OrderList {
             totalAmount += this.drink.get(i).getPrice()*this.drink.get(i).getQuantityInOrder();
         }
 
-        return user.getName().toUpperCase() +" ("+ user.getNoMatrics() +") "+ orderTime + "\n------FOOD-----\n" + foodString + "\n------Drink------\n" + drinkString + "\nTotal Amount: RM" + totalAmount +"\n\n";
+        return user.getName().toUpperCase() +" ("+ user.getNoMatrics() +") "+ orderTime + "\n-------FOOD------\n" + foodString + "\n------Drink------\n" + drinkString + "\nTotal Amount: RM" + totalAmount +"\n\n";
     }
 }

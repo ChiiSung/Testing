@@ -258,7 +258,7 @@ public class Admin {
                                 //Remove orderList for specific customer when complete order
                                 for(int i=0 ; i<orderList.size() ; i++) {
                                     //Display customer name and time order
-                                    System.out.println("\n--------------------------Customer" + (i+1) + "--------------------------" );
+                                    System.out.println("\n--------------------------Customer" + (i+1) + "-------------------------" );
                                     System.out.println("Customer Name: " + orderList.get(i).getUser().getName());
                                     System.out.println("Time order: " + orderList.get(i).getOrderTime());
                                     if(orderList.get(i).getFood().size() != 0) {//if food arrayList is not empty
@@ -282,7 +282,7 @@ public class Admin {
                                     //Check validity
                                     try {
                                         Scanner input = new Scanner(System.in);
-                                        System.out.println("Enter the customer number that order completed:");
+                                        System.out.print("Enter the customer number that order completed:");
                                         int optionRemove = input.nextInt();
 
                                         //Remove the orderList
@@ -325,13 +325,13 @@ public class Admin {
                     do {
                         do {
                             //print menu
-                            System.out.println("\n\n------Product mode-------");
+                            System.out.println("\n\n------Product mode-----------");
                             System.out.println("|1)Add Food                 |");
                             System.out.println("|2)Add Drink                |");
                             System.out.println("|3)Remove Food              |");
                             System.out.println("|4)Remove Drink             |");
                             System.out.println("|5)Exit                     |");
-                            System.out.println("---------------------------");
+                            System.out.println("-----------------------------");
 
                             //Check validity
                             try {
@@ -391,12 +391,12 @@ public class Admin {
 
                                 try {
                                     Scanner input = new Scanner(System.in);
-                                    System.out.println("Enter the number of food you want to remove.");
+                                    System.out.print("Enter the number of food you want to remove:");
                                     int optionRemove = input.nextInt();
                                     //Remove the selected food
-                                    if(optionRemove<0 || optionRemove>food.size()) {
+                                    if(optionRemove<=0 || optionRemove>food.size()) {
                                         System.out.println("The choice was no found.");
-                                    }else if(optionRemove>0 || optionRemove<food.size()){
+                                    }else if(optionRemove>0 && optionRemove<=food.size()){
                                         food.remove(optionRemove-1);
                                     }
                                 }catch (InputMismatchException e) {
@@ -420,7 +420,7 @@ public class Admin {
                                     //Remove the selected drink
                                     if(optionRemove<0 || optionRemove>drink.size()) {
                                         System.out.println("The choice was no found.");
-                                    }else if(optionRemove>0 || optionRemove<drink.size()){
+                                    }else if(optionRemove>0 && optionRemove<=drink.size()){
                                         drink.remove(optionRemove-1);
                                     }
                                 }catch (InputMismatchException e) {
