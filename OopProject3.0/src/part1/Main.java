@@ -285,6 +285,7 @@ public class Main {
                                     valid = false;
                                 }
                                 if(sauce <1 || sauce >3) { //if user input other than 1,2,3
+                                	error.showMessageDialog(error, "Your should input number from 1-3", "Error Input", JOptionPane.WARNING_MESSAGE);
                                     System.out.println("Your should input number from 1-3");
                                 }
                             }while(sauce<1 || sauce >3);//repeat when user input other than 1,2,3
@@ -568,7 +569,7 @@ public class Main {
 	
 	                                }else if(cancel == 3){
 	                                }else {
-	                                	error.showMessageDialog(error, "Enter your should input number from 1-3", "Error Input", JOptionPane.WARNING_MESSAGE);
+	                                	error.showMessageDialog(error, "Your should input number from 1-3", "Error Input", JOptionPane.WARNING_MESSAGE);
 	                                }
 	                            }while(cancel != 3);//repeat until the user input 3
 	                        }

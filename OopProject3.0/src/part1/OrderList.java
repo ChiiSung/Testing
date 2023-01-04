@@ -107,7 +107,7 @@ public class OrderList {
         if(exist) {
             //Check product in the list
             for(int i = 0; i<orderList.get(orderListNo).food.size(); i++) {
-                if(food.getProductName() == orderList.get(orderListNo).getFood().get(i).getProductName()
+                if(food.getProductName().equals(orderList.get(orderListNo).getFood().get(i).getProductName())
                         && food.getSauce() == orderList.get(orderListNo).getFood().get(i).getSauce()) {
                     existfood = true;
                     productListNo = i;
@@ -161,7 +161,7 @@ public class OrderList {
         if(exist) {
             //Check product in the list
             for(int i = 0; i<orderList.get(orderListNo).drink.size(); i++) {
-                if(drink.getProductName() == orderList.get(orderListNo).getDrink().get(i).getProductName()
+                if(drink.getProductName().equalsIgnoreCase(orderList.get(orderListNo).getDrink().get(i).getProductName()) 
                         && drink.getHot() == orderList.get(orderListNo).getDrink().get(i).getHot()
                         && drink.getLarge() == orderList.get(orderListNo).getDrink().get(i).getLarge()) {
                     existdrink= true;
