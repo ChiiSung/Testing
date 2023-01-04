@@ -351,7 +351,7 @@ public class Main {
                         do {
                             valid = true;
                             Scanner input = new Scanner(System.in);
-                            System.out.print("Do you want to go-Large the drink? (Y/N) : ");
+                            System.out.print("Do you want to go-Large the drink? (+RM1.50) (Y/N) : ");
                             size = input.nextLine();
                             if(size.equalsIgnoreCase("y")) {
                                 drinkOrder.goLarge(); //the size of drink become large and charge extra RM1.50
@@ -369,7 +369,7 @@ public class Main {
                         do {
                             valid = true;
                             Scanner input = new Scanner(System.in);
-                            System.out.print("Do you want to order a cold drink? (Y/N) : ");
+                            System.out.print("Do you want to order a cold drink? (+RM0.50) (Y/N) : ");
                             hot = input.nextLine();
                             if(hot.equalsIgnoreCase("y")) {
                                 drinkOrder.addIce();//the drink become cold drink and charge extra RM0.50
